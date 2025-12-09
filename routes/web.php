@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,4 @@ Route::get('/test', [TestController::class, 'test'])->name('test');
 
 require __DIR__.'/auth.php';
 
-
+Route::get('post/create', [PostController::class, 'create']);
