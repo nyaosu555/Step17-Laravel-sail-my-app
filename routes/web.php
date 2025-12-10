@@ -23,6 +23,8 @@ Route::get('/test', [TestController::class, 'test'])->name('test');
 
 require __DIR__.'/auth.php';
 
+Route::get('posts', [PostController::class, 'index']);
+
 Route::get('post/create', [PostController::class, 'create']);
 
 Route::post('post', [PostController::class, 'store'])->name('post.store');
