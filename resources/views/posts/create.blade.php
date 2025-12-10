@@ -6,16 +6,25 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto px-6">
-        <form action="">
+        @if(session('message'))
+            <div class="text-green-600 font-bold">
+                {{session('message')}}
+            </div>
+        @endif
+
+        <form action="{{route('post.store')}}" method="post">
+            @csrf
             <div class="mt-8">
                 <div class="w-full flex flex-col">
                     <label for="title" class="font-semibold mt-4">件名</label>
-                    <input type="text" name="title" class="w-auto py-2 border border-gray-300 rounded-md" id="title">
+                    <x-input-error :messages="$errors->get('title')" class="mt-2" />
+                    <input type="text" name="title" class="w-auto py-2 border border-gray-300 rounded-md" id="title" value="{{old('title')}}">
                 </div>
             </div>
             <div class="w-full flex flex-col">
                 <label for="body" class="font-semibold mt-4">本文</label>
-                <textarea name="body" id="body" cols="30" rows="5" class="w-auto py-2 border border-gray-300 rounded-md"></textarea>
+                <x-input-error  :messages="$errors->get('body')" class="mt-2" />
+                <textarea name="body" id="body" cols="30" rows="5" class="w-auto py-2 border border-gray-300 rounded-md">{{old('body')}}</textarea>
             </div>
             <x-primary-button class="mt-4">
                 送信する
