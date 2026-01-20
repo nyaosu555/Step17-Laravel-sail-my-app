@@ -6,10 +6,18 @@
     </x-slot>
 
     <div class="max-auto px-6">
+        @if(session('message'))
+            <div class="text-red-600 font-bold">
+                {{session('message')}}
+            </div>
+        @endif
         @foreach ($posts as $post )
             <div class="mt-4 p-8 bg-white max-w-7xl mx-auto rounded-2xl">
                 <h1 class="p-4 text-lg font-semibold">
-                    {{$post->title}}
+                    件名：
+                    <a href="{{route('post.show', $post)}}" class="text-blue-600">
+                        {{$post->title}}
+                    </a>
                 </h1>
                 <hr class="w-full">
                 <p class="mt-4 p-4">
