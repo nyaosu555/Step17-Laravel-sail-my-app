@@ -8,6 +8,8 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public const HOME = '/post';
+
     /**
      * Register any application services.
      */
