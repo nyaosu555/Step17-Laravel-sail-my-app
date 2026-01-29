@@ -11,7 +11,9 @@
                 {{session('message')}}
             </div>
         @endif --}}
-        <x-message :message="session('message')" />
+        <x-message
+            :message="session('message')"
+            :type="session('type')" />
         @foreach ($posts as $post )
             <div class="mt-4 p-8 bg-white max-w-7xl mx-auto rounded-2xl">
                 <h1 class="p-4 text-lg font-semibold">
@@ -31,7 +33,7 @@
                 </div>
             </div>
         @endforeach
-        <div class="mb-4">
+        <div class="m-4 max-w-7xl mx-auto">
             {{ $posts->links() }}
         </div>
     </div>

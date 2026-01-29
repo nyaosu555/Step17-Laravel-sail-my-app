@@ -14,7 +14,7 @@ class PostController extends Controller
     {
         // $posts = Post::all();
         // ページネーション付きで一覧表示
-        $posts = Post::paginate(10);
+        $posts = Post::orderBy('created_at', 'desc')->paginate(10);
         return view('posts.index', compact('posts'));
     }
 
@@ -41,8 +41,16 @@ class PostController extends Controller
 
         $post = Post::create($validated);
 
-        $request->session()->flash('message', '正常に投稿が完了しました。');
-        return redirect()->route('post.index');
+        // flash()を使った場合
+        // $request->session()->flash('message', '正常に投稿が完了しました。');
+        // return redirect()->route('post.index');
+
+        // with()を使った場合
+
+        return redirect()->route('post.index')->with([
+            'message' => '投稿が正常に完了しました。',
+            'type' => 'success',
+        ]);
     }
 
     /**
@@ -56,8 +64,18 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
+    public function edit(Request $request, Post $post)
     {
+        if(auth()->id() !== $post->user_id) {
+            // $request->session()->flash('message', 'この投稿は投稿者本人以外は編集できません。');
+            // return redirect()->route('post.index');
+
+            // with()を使った場合
+            return redirect()->route('post.index')->with([
+                'message' => 'この投稿は投稿者本人以外は編集できません。',
+                'type' => 'danger',
+            ]);
+        }
         return view('posts.edit', compact('post'));
     }
 
@@ -66,6 +84,17 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        if(auth()->id() !== $post->user_id) {
+                // $request->session()->flash('message', 'この投稿は投稿者本人以外は編集できません。');
+                // return redirect()->route('post.index');
+
+                // with()を使った場合
+                return redirect()->route('post.index')->with([
+                    'message' => 'この投稿は投稿者本人以外は編集できません。',
+                    'type' => 'danger',
+                ]);
+        }
+
         $validated = $request->validate([
             'title' => 'required | max: 20',
             'body' => 'required | max: 400',
@@ -75,8 +104,13 @@ class PostController extends Controller
 
         $post->update($validated);
 
-        $request->session()->flash('message', '更新しました。');
-        return redirect()->route('post.show', compact('post'));
+        // $request->session()->flash('message', '更新しました。');
+        // return redirect()->route('post.show', compact('post'));
+
+        return redirect()->route('post.show', compact('post'))->with([
+            'message' => '更新しました。',
+            'type' => 'success',
+        ]);
     }
 
     /**
@@ -84,8 +118,26 @@ class PostController extends Controller
      */
     public function destroy(Request $request, Post $post)
     {
+
+        if(auth()->id() !== $post->user_id) {
+                // $request->session()->flash('message', 'この投稿は投稿者本人以外は編集できません。');
+                // return redirect()->route('post.index');
+
+                // with()を使った場合
+                return redirect()->route('post.index')->with([
+                    'message' => 'この投稿は投稿者本人以外は削除できません。',
+                    'type' => 'danger',
+                ]);
+        }
+
         $post->delete();
-        $request->session()->flash('message', '削除しました。');
-        return redirect()->route('post.index');
+        // $request->session()->flash('message', '削除しました。');
+        // return redirect()->route('post.index');
+
+        // with()を使った場合
+        return redirect()->route('post.index')->with([
+            'message' => '削除しました。',
+            'type' => 'danger',
+        ]);
     }
 }
