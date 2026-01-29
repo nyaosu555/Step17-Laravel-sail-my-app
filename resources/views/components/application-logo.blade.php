@@ -3,6 +3,11 @@
 </svg> --}}
 {{-- @props(['width'])
 @dump($width) --}}
-<img
-    {{-- {{ $attributes->merge(['width' => $width.'%']) }} --}}
-    src="{{ asset('img/image_50396929.jpg') }}" alt="" class="rounded w-full h-full rounded-[50%] object-cover">
+@if(Auth::check() && Auth::user()->name === 'testuser1')
+    <img
+        {{-- {{ $attributes->merge(['width' => $width.'%']) }} --}}
+        src="{{ asset('img/image_50396929.jpg') }}" alt="" class="rounded w-full h-full rounded-[50%] object-cover">
+@else
+    <img
+        src="{{ asset('img/default_icon.png') }}" alt="" class="rounded w-full h-full rounded-[50%] object-cover">
+@endif
